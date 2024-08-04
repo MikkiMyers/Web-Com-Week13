@@ -1,0 +1,74 @@
+:root {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+body, html {
+    height: 100%;
+    margin: 0 10% 0 10%;
+}
+
+main {
+    display: grid;
+    place-items: center;
+}
+
+table.app-cmp-data-list {
+    border-collapse: collapse;
+    width: 100%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+table.app-cmp-data-list,
+table.app-cmp-data-list > * > tr > :is(th, td) {
+    border: 1px solid black;
+}
+
+dl.app-cmp-data-detail {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+dl.app-cmp-data-detail > dt {
+    display: flex;
+    flex-direction: row;
+    font-weight: bold;
+}
+
+dl.app-cmp-data-detail > dt::after {
+    content: "::";
+    padding-left: 1ch;
+    padding-right: 1ch;
+    margin-left: auto;
+    color: blue;
+}
+
+#app-cmp-main-header,
+#app-cmp-main-footer {
+    text-align: center;
+}
+
+#app-cmp-main-header {
+    margin-bottom: 64px;
+}
+
+#app-cmp-main-content {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#app-cmp-main-footer {
+    margin-top: 64px;
+}
+
+a {
+    text-decoration: none;
+    margin: 0 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
