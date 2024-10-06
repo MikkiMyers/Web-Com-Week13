@@ -3,7 +3,20 @@
 @section('title', $title)
 
 @section('content')
-    <form action="{{ route('shops.list') }}" method="get" class="app-cmp-search-form">
+    <nav class="app-cmp-link-cat">
+        <ul>
+            <li>
+                <a href="{{ route('products.view', ['product' => $product->code, ]) }}">&lt;Back</a>
+            </li>
+            @can('update', \App\Models\Product::class)
+                <li class="app-cl-primary app-cl-cmd-cat">
+                    <a href="{{ route('products.add-shops-form', ['product' => $product->code, ]) }}">Add Shops</a>
+                </li>
+            @endcan
+        </ul>
+    </nav>
+
+    <form action="{{ route('products.view-shops', ['product' => $product->code, ]) }}" method="get" class="app-cmp-search-form">
         <div class="app-cmp-form-detail-shop">
             <div class="app-cmp-form-detail">
                 <label for="app-search-term">Search</label>
@@ -11,26 +24,16 @@
             </div>
             <div class="app-cmp-actions-bar app-st-dense">
                 <button type="submit" class="app-cl-primary">Search</button>
-                <a href="{{ route('shops.list') }}">
+                <a href="{{ route('products.list') }}">
                     <button type="button" class="app-cl-warn">Clear</button>
                 </a>
             </div>
         </div>
     </form>
 
-    <nav class="app-cmp-links">
-        <ul>
-            @can('create', \App\models\Product::class)
-                <li class="app-cl-primary app-cl-cmd">
-                    <a href="{{ route('shops.create-form') }}">New Shop</a>
-                </li>
-            @endcan
-        </ul>
-    </nav>
-
     <main>
         <table class="app-cmp-data-list app-cl-common-links-container">
-            <caption>shop</caption>
+            <caption>Shop of {{ $product->name }}</caption>
             <colgroup>
                 <col style="width: 0px;">
                 <col>
@@ -42,7 +45,9 @@
                     <th>Code</th>
                     <th>Name</th>
                     <th>Owner</th>
-                    <th>No. of Products</th>
+                    @can('update', \App\Models\Product::class)
+                        <th>&nbsp;</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -50,12 +55,6 @@
                     session()->put('bookmark.shops.view', url()->full());
                 @endphp
 
-                @if (session('status'))
-                    <div class="alert alert-success">
-                        {{ session('status') }}
-                    </div>
-                @endif
-                
                 @foreach ($shops as $shop)
                     <tr>
                         <td>
@@ -65,14 +64,17 @@
                             <span class="app-cl-name">{{ $shop->name }}</span>
                         </td>
                         <td>{{ $shop->owner }}</td>
-                        <td>
-                            <span class="app-cl-number">{{ $shop->products_count }} </span>
-                        </td>
+                        @can('update', \App\Models\Product::class)
+                            <td>
+                                <a href="{{ route('products.remove-shop', ['product' => $product->code, 'shop' => $shop->code, ]) }}">
+                                    <button type="button" class="cpp-cl-warn">Remove</button>
+                                </a>
+                            </td>
+                        @endcan
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </main>
-
     <div>{{ $shops->withQueryString()->links() }}</div>
 @endsection
